@@ -357,7 +357,7 @@
       background: rgba(255,255,255,.03);
     }
 
-    /* cover on top (a.png) */
+    /* cover on top (a.jpg) */
     .cover3d{
       position:absolute;
       top: 7%;
@@ -393,6 +393,12 @@
       opacity: .22;
       pointer-events:none;
       animation: sheen 2.8s ease-in-out infinite;
+    }
+
+    @keyframes sheen{
+      0%{ transform: translateZ(3px) translateX(-30%) rotate(18deg); opacity:.12;}
+      50%{ opacity:.22; }
+      100%{ transform: translateZ(3px) translateX(30%) rotate(18deg); opacity:.12;}
     }
 
     /* closed state */
@@ -449,27 +455,6 @@
       background: rgba(255,255,255,.06);
       color: rgba(255,255,255,.78);
     }
-
-    .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.90);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      user-select:none;
-      font-family: inherit;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-    .btn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.30); background: rgba(255,255,255,.08); }
-    .btn:active{ transform: translateY(0px) scale(.98); }
-
-    @media (max-width: 520px){
-      .btn{ padding: 9px 11px; border-radius: 12px; }
-    }
   </style>  
 </head>  
   
@@ -504,7 +489,7 @@
 
         <!-- ✅ REAL BOOK (cover on top + drag flip pages) -->
         <div class="book-wrap" id="bookSection">
-          <p class="book-hint">📘 Cover (a.png) पर tap/click करो → book open होगी। फिर right page को mouse/hand से drag करके pages flip कर सकते हो (15 pages).</p>
+          <p class="book-hint">📘 Cover (a.jpg) पर tap/click करो → book open होगी। फिर right page को mouse/hand से drag करके pages flip कर सकते हो (15 pages).</p>
 
           <div class="book-stage">
             <div class="flipbook closed animating" id="flipbook" aria-label="Flip Book">
@@ -526,9 +511,9 @@
                 <div class="paper" aria-hidden="true"></div>
               </div>
 
-              <!-- cover on top (a.png) -->
+              <!-- cover on top (a.jpg) -->
               <div class="cover3d" id="cover3d" title="Click to open cover">
-                <img src="a.png" alt="Book Cover (a.png)">
+                <img src="a.jpg" alt="Book Cover (a.jpg)">
               </div>
             </div>
 
@@ -572,14 +557,14 @@
 
     // =========================
     // Flipbook logic (15 pages)
-    // Page 1 => n.png
-    // Page 2 => m.png
+    // Page 1 => n.jpg
+    // Page 2 => m.jpg
     // Others empty
     // Drag right page to flip
     // =========================
     (function(){
       const TOTAL = 15;
-      const pageMap = { 1:"n.png", 2:"m.png" };
+      const pageMap = { 1:"n.jpg", 2:"m.jpg" };
 
       const flipbook = document.getElementById("flipbook");
       const cover = document.getElementById("cover3d");
@@ -594,13 +579,9 @@
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
 
-      // current spread:
-      // left shows pageIndex (current)
-      // right shows pageIndex+1
       let current = 1; // left page number
       let isOpen = false;
 
-      // drag state
       let dragging = false;
       let startX = 0;
       let progress = 0; // 0..1
@@ -617,8 +598,6 @@
       function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
 
       function render(){
-        // left = current
-        // right = current+1
         leftContent.innerHTML = pageHTML(current);
         const rightNo = current + 1;
         rightContent.innerHTML = rightNo <= TOTAL ? pageHTML(rightNo) : `<div class="empty">खाली पेज</div>`;
@@ -654,12 +633,130 @@
         else openBook();
       });
 
-      // set initial
       render();
 
-      // helper: set turn transform from progress
       function setTurn(p){
-        // p: 0..1 ; rotate 0 to -180
         const deg = -180 * p;
         rightPage.style.transform = `rotateY(${deg}deg)`;
-        // stronger shadow as it turns
+        pageShadow.style.opacity = String(0.10 + 0.35*p);
+      }
+
+      function resetTurn(){
+        rightPage.style.transition = "transform 180ms ease";
+        pageShadow.style.transition = "opacity 180ms ease";
+        setTurn(0);
+        setTimeout(()=>{
+          rightPage.style.transition = "";
+          pageShadow.style.transition = "";
+        }, 190);
+      }
+
+      function finishTurnForward(){
+        rightPage.style.transition = "transform 220ms ease-in-out";
+        pageShadow.style.transition = "opacity 220ms ease-in-out";
+        setTurn(1);
+        setTimeout(()=>{
+          current = clamp(current + 2, 1, TOTAL);
+          rightPage.style.transition = "";
+          pageShadow.style.transition = "";
+          rightPage.style.transform = "";
+          pageShadow.style.opacity = "";
+          animating = false;
+          render();
+        }, 240);
+      }
+
+      function finishTurnBack(){
+        animating = true;
+        rightPage.style.transition = "transform 220ms ease-in-out";
+        pageShadow.style.transition = "opacity 220ms ease-in-out";
+        setTurn(1);
+        setTimeout(()=>{
+          current = clamp(current - 2, 1, TOTAL);
+          rightPage.style.transition = "";
+          pageShadow.style.transition = "";
+          rightPage.style.transform = "";
+          pageShadow.style.opacity = "";
+          animating = false;
+          render();
+        }, 240);
+      }
+
+      function canTurnForward(){
+        return isOpen && !animating && (current + 1) <= TOTAL;
+      }
+
+      function canTurnBack(){
+        return isOpen && !animating && (current - 2) >= 1;
+      }
+
+      function onDown(clientX){
+        if(!isOpen || animating) return;
+        dragging = true;
+        startX = clientX;
+        progress = 0;
+        rightPage.style.willChange = "transform";
+        pageShadow.style.willChange = "opacity";
+      }
+
+      function onMove(clientX){
+        if(!dragging) return;
+        const dx = startX - clientX;
+        const w = rightPage.getBoundingClientRect().width;
+        progress = clamp(dx / w, 0, 1);
+
+        if(!canTurnForward()) progress = 0;
+        setTurn(progress);
+      }
+
+      function onUp(){
+        if(!dragging) return;
+        dragging = false;
+        rightPage.style.willChange = "";
+        pageShadow.style.willChange = "";
+
+        if(!canTurnForward()){
+          resetTurn();
+          return;
+        }
+
+        if(progress > 0.35){
+          animating = true;
+          finishTurnForward();
+        }else{
+          resetTurn();
+        }
+      }
+
+      rightPage.addEventListener("mousedown", (e)=> onDown(e.clientX));
+      window.addEventListener("mousemove", (e)=> onMove(e.clientX));
+      window.addEventListener("mouseup", onUp);
+
+      rightPage.addEventListener("touchstart", (e)=>{
+        const t = e.touches[0];
+        onDown(t.clientX);
+      }, {passive:true});
+      window.addEventListener("touchmove", (e)=>{
+        const t = e.touches[0];
+        if(!t) return;
+        onMove(t.clientX);
+      }, {passive:true});
+      window.addEventListener("touchend", onUp);
+
+      nextBtn.addEventListener("click", ()=>{
+        if(!canTurnForward()) return;
+        animating = true;
+        setTurn(0);
+        finishTurnForward();
+      });
+
+      prevBtn.addEventListener("click", ()=>{
+        if(!canTurnBack()) return;
+        finishTurnBack();
+      });
+
+      rightPage.addEventListener("dragstart", (e)=> e.preventDefault());
+    })();
+  </script>  
+</body>  
+</html>
