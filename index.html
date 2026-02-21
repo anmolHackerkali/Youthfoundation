@@ -144,6 +144,21 @@
       font-size: 16.5px;  
       line-height: 1.9;  
     }  
+
+    /* ✅ Added only for MP4 placement (keeps rest unchanged) */
+    .gift-wrap{
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+    .gift-video{
+      width: min(360px, 100%);
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 14px 45px rgba(0,0,0,.25);
+      background: rgba(0,0,0,.15);
+    }
   
     footer{  
       text-align:center;  
@@ -172,6 +187,13 @@
       हम जरूरतमंद परिवारों को सहयोग, बच्चों की पढ़ाई में सहायता, रक्तदान / स्वास्थ्य शिविर, स्वच्छता व सामाजिक जागरूकता जैसे कार्यक्रमों के जरिए  
       एक बेहतर और मजबूत समाज बनाने की कोशिश करते हैं।  
     </p>  
+
+    <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->
+    <div class="gift-wrap">
+      <video class="gift-video" autoplay loop muted playsinline preload="auto">
+        <source src="v.mp4" type="video/mp4">
+      </video>
+    </div>
   </section>  
 
   <section class="card">  
@@ -182,6 +204,13 @@
       मैं शिक्षा, स्वास्थ्य, जागरूकता और सामाजिक सेवा से जुड़े कार्यों में सक्रिय रूप से भाग लेता हूँ और समाज में सकारात्मक बदलाव लाने के लिए  
       पूरी ईमानदारी से काम करता हूँ।  
     </p>  
+
+    <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->
+    <div class="gift-wrap">
+      <video class="gift-video" autoplay loop muted playsinline preload="auto">
+        <source src="v.mp4" type="video/mp4">
+      </video>
+    </div>
   </section>  
 </main>  
 
@@ -191,4 +220,4 @@
 
   </div>  
 </body>  
-</html>  
+</html>
