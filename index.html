@@ -58,14 +58,36 @@
       position:relative;  
       overflow:hidden;  
     }  
+
+    /* ✅ DP + Heading side-by-side (only header enhanced) */
+    .header-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .dp{
+      width:78px;
+      height:78px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.28);
+      box-shadow: 0 14px 45px rgba(0,0,0,.35);
+      flex: 0 0 auto;
+    }
+    .header-text{
+      text-align:left;
+      min-width:min(520px, 100%);
+    }
   
     /* animated top heading */  
     .main-title{  
       margin: 0;  
-      font-size: clamp(28px, 4.5vw, 52px);  
+      font-size: clamp(22px, 3.4vw, 40px);  
       font-weight: 800;  
       letter-spacing: .5px;  
-      line-height:1.1;  
+      line-height:1.15;  
   
       background: linear-gradient(90deg, #ffffff, #a7c8ff, #ffd0e8, #ffffff);  
       background-size: 220% 100%;  
@@ -88,9 +110,9 @@
     }  
   
     .subtitle{  
-      margin: 12px 0 0;  
+      margin: 8px 0 0;  
       color: var(--muted);  
-      font-size: 16px;  
+      font-size: 14px;  
       line-height:1.6;  
     }  
   
@@ -172,12 +194,18 @@
       .wrap{ padding-top: 26px; }  
       .card{ padding: 16px; }  
       p{ font-size: 16px; }  
+      .header-text{ text-align:center; }
     }  
   </style>  </head>  <body>  
   <div class="glow"></div>    <div class="wrap">  
     <header>  
-      <h1 class="main-title">Youth Foundation Ambedkar Nagar</h1>  
-      <div class="subtitle">समाज सेवा • शिक्षा • स्वास्थ्य • जागरूकता</div>  
+      <div class="header-row">
+        <img class="dp" src="a.jpg" alt="DP">
+        <div class="header-text">
+          <h1 class="main-title">Youth Foundation Ambedkar Nagar</h1>  
+          <div class="subtitle">समाज सेवा • शिक्षा • स्वास्थ्य • जागरूकता</div>  
+        </div>
+      </div>
     </header>  <main class="content">  
   <section class="card">  
     <h2><span class="dot"></span> संस्था के बारे में</h2>  
