@@ -1,59 +1,40 @@
 <!doctype html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>Photo Album Flip Book</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ultra Smooth Photo Viewer</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --w: min(92vw, 980px);
-  --h: min(78vh, 560px);
-  --radius: 18px;
+  --w:min(95vw,650px);
+  --h:min(80vh,780px);
 }
 
-*{ box-sizing:border-box; }
+*{box-sizing:border-box}
 
 body{
   margin:0;
   min-height:100vh;
   display:grid;
   place-items:center;
-  font-family:"Hind", sans-serif;
-  overflow:hidden;
-
-  /* 📸 Album style background */
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255,255,255,.08), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(255,255,255,.05), transparent 40%),
-    repeating-linear-gradient(
-      45deg,
-      #5a3e2b,
-      #5a3e2b 10px,
-      #4a3222 10px,
-      #4a3222 20px
-    );
+  font-family:Hind,sans-serif;
+  background:linear-gradient(135deg,#3a2a1c,#2b1b0f);
 }
 
-/* Controls */
+/* controls */
 .topbar{
   position:fixed;
-  top:15px;
+  top:12px;
   left:0;
   right:0;
   display:flex;
   justify-content:center;
-  z-index:100;
+  gap:10px;
 }
-.pill{
-  background:rgba(0,0,0,.4);
-  padding:10px 15px;
-  border-radius:50px;
-}
+
 button{
   padding:8px 15px;
   border:none;
@@ -61,98 +42,40 @@ button{
   cursor:pointer;
   font-weight:bold;
 }
-button:hover{ opacity:.8 }
 
-/* Book */
-.stage{
+/* viewer */
+.viewer{
   width:var(--w);
   height:var(--h);
-  perspective:2000px;
+  background:black;
+  position:relative;
+  overflow:hidden;
+  touch-action:none;
 }
 
-.book{
+/* 2 image layers */
+.viewer img{
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
-  position:relative;
-  transform-style:preserve-3d;
-  border-radius:var(--radius);
-  box-shadow:0 40px 60px rgba(0,0,0,.6);
+  object-fit:contain;
+  transition:opacity .35s ease, transform .2s ease;
 }
 
-/* Album cover */
-.cover{
+.imgTop{opacity:1; z-index:2;}
+.imgBottom{opacity:0; z-index:1;}
+
+/* counter */
+.counter{
   position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,#3a2a1c,#2b1b0f);
-  border-radius:var(--radius);
-  box-shadow:inset 0 0 0 3px rgba(0,0,0,.5);
-  transform:translateZ(-4px);
-}
-
-/* Spread */
-.pages{
-  position:absolute;
-  inset:25px;
-  border-radius:14px;
-  overflow:hidden;
-  transform-style:preserve-3d;
-}
-
-.baseSpread{
-  position:absolute;
-  inset:0;
-  display:flex;
-}
-
-/* 2 page halves */
-.half{
-  width:50%;
-  height:100%;
-  background-size:200% 100%;
-  background-repeat:no-repeat;
-}
-
-.left{
-  background-position:left center;
-}
-.right{
-  background-position:right center;
-}
-
-/* Flipping sheet */
-.sheet{
-  position:absolute;
-  inset:0;
-  transform-origin:left center;
-  transform-style:preserve-3d;
-}
-
-.leaf{
-  position:absolute;
-  left:50%;
-  width:50%;
-  height:100%;
-  transform-origin:left center;
-  transform-style:preserve-3d;
-}
-
-.side{
-  position:absolute;
-  inset:0;
-  backface-visibility:hidden;
-  background-size:200% 100%;
-  background-repeat:no-repeat;
-}
-.side.front{
-  background-position:right center;
-}
-.side.back{
-  transform:rotateY(180deg);
-  background-position:left center;
-}
-
-.sheet.anim{
-  transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  top:10px;
+  right:10px;
+  color:white;
+  background:rgba(0,0,0,.4);
+  padding:5px 12px;
+  border-radius:20px;
+  z-index:5;
 }
 </style>
 </head>
@@ -160,94 +83,118 @@ button:hover{ opacity:.8 }
 <body>
 
 <div class="topbar">
-  <div class="pill">
-    <button id="prevBtn">⬅ Prev</button>
-    <button id="nextBtn">Next ➡</button>
-  </div>
+<button id="prevBtn">⬅ Prev</button>
+<button id="nextBtn">Next ➡</button>
+<button id="fullscreenBtn">⛶ Full</button>
+<button id="autoBtn">▶ Auto</button>
 </div>
 
-<div class="stage">
-  <div class="book">
-    <div class="cover"></div>
-
-    <div class="pages" id="pages">
-      <div class="baseSpread">
-        <div class="half left" id="leftPage"></div>
-        <div class="half right" id="rightPage"></div>
-      </div>
-    </div>
-  </div>
+<div class="viewer" id="viewer">
+<img id="img1" class="imgTop">
+<img id="img2" class="imgBottom">
+<div class="counter" id="counter"></div>
 </div>
 
 <script>
-/* 🖼️ Your images (2 pages = 1 full image) */
-const photos = [
-  "a.jpg",
-  "n.jpg",
-  "m.jpg"
+const photos=[
+"a.jpg","b.jpg","c.jpg","n.jpg","m.jpg","e.jpg","f.jpg","g.jpg"
 ];
 
-const pagesEl = document.getElementById("pages");
-const leftPage = document.getElementById("leftPage");
-const rightPage = document.getElementById("rightPage");
+let index=0;
 
-let current = 0;
-const sheets = [];
+const img1=document.getElementById("img1");
+const img2=document.getElementById("img2");
+const counter=document.getElementById("counter");
 
-/* Render base spread */
-function renderSpread(i){
-  leftPage.style.backgroundImage = `url(${photos[i]})`;
-  rightPage.style.backgroundImage = `url(${photos[i]})`;
+let active=img1;
+let incoming=img2;
+
+/* preload images */
+photos.forEach(src=>{
+  const i=new Image();
+  i.src=src;
+});
+
+/* update counter */
+function updateCounter(){
+  counter.textContent=(index+1)+" / "+photos.length;
 }
 
-/* Create flip sheets */
-for(let i=0;i<photos.length;i++){
+/* ultra smooth change */
+function show(newIndex){
+  if(newIndex<0||newIndex>=photos.length) return;
 
-  const sheet = document.createElement("div");
-  sheet.className="sheet";
-  sheet.style.zIndex=1000-i;
+  incoming.src=photos[newIndex];
 
-  const leaf=document.createElement("div");
-  leaf.className="leaf";
+  // wait image load
+  incoming.onload=()=>{
+    incoming.style.opacity=1;
+    active.style.opacity=0;
 
-  const front=document.createElement("div");
-  front.className="side front";
-  front.style.backgroundImage=`url(${photos[i]})`;
+    setTimeout(()=>{
+      index=newIndex;
 
-  const back=document.createElement("div");
-  back.className="side back";
-  back.style.backgroundImage=`url(${photos[i+1]||photos[i]})`;
+      // swap layers
+      [active,incoming]=[incoming,active];
 
-  leaf.appendChild(front);
-  leaf.appendChild(back);
-  sheet.appendChild(leaf);
-
-  pagesEl.appendChild(sheet);
-  sheets.push(sheet);
+      incoming.style.opacity=0;
+      updateCounter();
+    },350);
+  };
 }
 
-function setAngle(i,angle,anim=false){
-  if(!sheets[i]) return;
-  sheets[i].classList.toggle("anim",anim);
-  sheets[i].style.transform=`rotateY(${angle}deg)`;
-}
+function next(){show(index+1)}
+function prev(){show(index-1)}
 
-/* Buttons */
-document.getElementById("nextBtn").onclick=()=>{
-  if(current>=photos.length-1) return;
-  setAngle(current,-180,true);
-  current++;
-  renderSpread(current);
+nextBtn.onclick=next;
+prevBtn.onclick=prev;
+
+/* swipe */
+let startX=0;
+viewer.addEventListener("pointerdown",e=>{
+  startX=e.clientX;
+});
+
+viewer.addEventListener("pointerup",e=>{
+  let dx=e.clientX-startX;
+  if(dx<-60) next();
+  if(dx>60) prev();
+});
+
+/* fullscreen */
+fullscreenBtn.onclick=()=>{
+  if(!document.fullscreenElement)
+    viewer.requestFullscreen();
+  else
+    document.exitFullscreen();
 };
 
-document.getElementById("prevBtn").onclick=()=>{
-  if(current<=0) return;
-  current--;
-  setAngle(current,0,true);
-  renderSpread(current);
+/* auto slideshow */
+let auto=false,timer;
+
+autoBtn.onclick=()=>{
+  auto=!auto;
+  autoBtn.textContent=auto?"⏸ Stop":"▶ Auto";
+
+  if(auto) timer=setInterval(next,2500);
+  else clearInterval(timer);
 };
 
-renderSpread(0);
+/* zoom */
+let scale=1,lastTap=0;
+
+viewer.addEventListener("pointerdown",()=>{
+  let now=Date.now();
+  if(now-lastTap<300){
+    scale=scale===1?2:1;
+    active.style.transform=`scale(${scale})`;
+  }
+  lastTap=now;
+});
+
+/* init */
+active.src=photos[index];
+updateCounter();
 </script>
 
 </body>
