@@ -182,6 +182,155 @@
       box-shadow: 0 14px 45px rgba(0,0,0,.25);
       background: rgba(0,0,0,.15);
     }
+
+    /* ✅ NEW: Book button row above footer */
+    .book-cta{
+      margin-top: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+      padding: 12px 12px;
+    }
+    .book-link{
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 14px 45px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+      transform: translateY(0);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .book-link:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.28);
+    }
+
+    /* Animated "Book" icon */
+    .book-btn{
+      width:64px;
+      height:50px;
+      position:relative;
+      flex:0 0 auto;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.25));
+      animation: bookFloat 2.6s ease-in-out infinite;
+    }
+    @keyframes bookFloat{
+      0%,100%{ transform: translateY(0) rotate(-1deg); }
+      50%{ transform: translateY(-4px) rotate(1deg); }
+    }
+    .book-btn .cover{
+      position:absolute;
+      inset:0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(125,180,255,.95), rgba(255,155,211,.90));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+    }
+    .book-btn .spine{
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:18px;
+      border-radius: 10px 0 0 10px;
+      background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(255,255,255,.10));
+      border-right: 1px solid rgba(255,255,255,.22);
+    }
+    .book-btn .page{
+      position:absolute;
+      right:6px;
+      top:6px;
+      bottom:6px;
+      width:22px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.60));
+      transform-origin: left center;
+      animation: pageFlip 1.2s ease-in-out infinite;
+      opacity:.95;
+    }
+    @keyframes pageFlip{
+      0%,100%{ transform: perspective(260px) rotateY(0deg); }
+      50%{ transform: perspective(260px) rotateY(-38deg); }
+    }
+    .book-btn .shine{
+      position:absolute;
+      inset:0;
+      border-radius: 10px;
+      background: linear-gradient(120deg, rgba(255,255,255,.0), rgba(255,255,255,.32), rgba(255,255,255,.0));
+      background-size: 240% 100%;
+      animation: shineMove 1.8s ease-in-out infinite;
+      mix-blend-mode: screen;
+      opacity:.7;
+    }
+    @keyframes shineMove{
+      0%{ background-position: 0% 50%; }
+      60%{ background-position: 100% 50%; }
+      100%{ background-position: 0% 50%; }
+    }
+
+    /* Text + arrow animation */
+    .hint{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 6px 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.08);
+      backdrop-filter: blur(8px);
+    }
+    .hint-text{
+      font-size: 14.5px;
+      color: rgba(255,255,255,.90);
+      letter-spacing: .2px;
+      animation: hintGlow 2.2s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    @keyframes hintGlow{
+      0%,100%{ transform: translateY(0); opacity:.92; }
+      50%{ transform: translateY(-2px); opacity:1; }
+    }
+    .arrow{
+      width:38px;
+      height:16px;
+      position:relative;
+      animation: arrowMove 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,.28));
+    }
+    @keyframes arrowMove{
+      0%,100%{ transform: translateX(0); }
+      50%{ transform: translateX(-6px); }
+    }
+    .arrow:before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:50%;
+      width:30px;
+      height:2px;
+      transform: translateY(-50%);
+      background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.92));
+      border-radius: 999px;
+    }
+    .arrow:after{
+      content:"";
+      position:absolute;
+      right:0;
+      top:50%;
+      width:10px;
+      height:10px;
+      border-right: 2px solid rgba(255,255,255,.92);
+      border-top: 2px solid rgba(255,255,255,.92);
+      transform: translateY(-50%) rotate(225deg);
+      border-radius: 2px;
+    }
   
     footer{  
       text-align:center;  
@@ -196,6 +345,7 @@
       .card{ padding: 16px; }  
       p{ font-size: 16px; }  
       .header-text{ text-align:center; }
+      .hint-text{ white-space: normal; text-align:center; }
     }  
   </style>  </head>  <body>  
   <div class="glow"></div>    <div class="wrap">  
@@ -242,6 +392,23 @@
     </div>
   </section>  
 </main>  
+
+<!-- ✅ NEW: Book button + animated hint (above footer) -->
+<div class="book-cta">
+  <div class="hint">
+    <div class="hint-text">फोटो देखने के लिए सामने click करें</div>
+    <div class="arrow" aria-hidden="true"></div>
+  </div>
+
+  <a class="book-link" href="book.html" aria-label="Open Book">
+    <div class="book-btn" aria-hidden="true">
+      <div class="cover"></div>
+      <div class="spine"></div>
+      <div class="page"></div>
+      <div class="shine"></div>
+    </div>
+  </a>
+</div>
 
 <footer>  
   © Youth Foundation Ambedkar Nagar  
