@@ -1,578 +1,680 @@
-<!doctype html>    
-    
-<html lang="hi">      
-<head>      
-  <meta charset="UTF-8" />      
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />      
-  <title>Youth Foundation Ambedkar Nagar</title>    <!-- Hindi Font (Devanagari) -->    <link rel="preconnect" href="https://fonts.googleapis.com">      
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>      
-  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&display=swap" rel="stylesheet">    <style>      
-    :root{      
-      --bg1:#0b1220;      
-      --bg2:#101a2f;      
-      --card:rgba(255,255,255,.08);      
-      --border:rgba(255,255,255,.14);      
-      --text:rgba(255,255,255,.92);      
-      --muted:rgba(255,255,255,.75);      
+<!doctype html>      
+      
+<html lang="hi">        
+<head>        
+  <meta charset="UTF-8" />        
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />        
+  <title>Youth Foundation Ambedkar Nagar</title>    <!-- Hindi Font (Devanagari) -->    <link rel="preconnect" href="https://fonts.googleapis.com">        
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>        
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&display=swap" rel="stylesheet">    <style>        
+    :root{        
+      --bg1:#0b1220;        
+      --bg2:#101a2f;        
+      --card:rgba(255,255,255,.08);        
+      --border:rgba(255,255,255,.14);        
+      --text:rgba(255,255,255,.92);        
+      --muted:rgba(255,255,255,.75);        
+    }        
+        
+    *{ box-sizing:border-box; }        
+    body{        
+      margin:0;        
+      font-family:"Hind", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;        
+      color:var(--text);        
+        
+      /* Animated gradient background */        
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(92,145,255,.35), transparent 55%),        
+                  radial-gradient(900px 500px at 90% 20%, rgba(255,109,182,.30), transparent 55%),        
+                  linear-gradient(135deg, var(--bg1), var(--bg2));        
+      min-height:100vh;        
+      overflow-x:hidden;        
+    }        
+        
+    /* subtle moving light */        
+    .glow{        
+      position:fixed;        
+      inset:-200px;        
+      background: conic-gradient(from 180deg, rgba(255,255,255,.0), rgba(255,255,255,.09), rgba(255,255,255,.0));        
+      filter: blur(40px);        
+      animation: spinGlow 12s linear infinite;        
+      pointer-events:none;        
+      opacity:.35;        
+    }        
+    @keyframes spinGlow { to { transform: rotate(360deg); } }        
+        
+    .wrap{        
+      max-width: 980px;        
+      margin: 0 auto;        
+      padding: 40px 18px 70px;        
+    }        
+        
+    header{        
+      text-align:center;        
+      padding: 26px 18px;        
+      border:1px solid var(--border);        
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));        
+      border-radius: 18px;        
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);        
+      position:relative;        
+      overflow:hidden;        
+    }        
+      
+    /* ✅ DP + Heading side-by-side (only header enhanced) */      
+    .header-row{      
+      display:flex;      
+      align-items:center;      
+      justify-content:center;      
+      gap:16px;      
+      flex-wrap:wrap;      
+    }      
+    .dp{      
+      width:120px;      
+      height:120px;      
+      border-radius:50%;      
+      object-fit:contain;      
+      background: rgba(0,0,0,.18);      
+      border:2px solid rgba(255,255,255,.28);      
+      box-shadow: 0 14px 45px rgba(0,0,0,.35);      
+      flex: 0 0 auto;      
+    }      
+    .header-text{      
+      text-align:left;      
+      min-width:min(520px, 100%);      
+    }      
+        
+    /* animated top heading */        
+    .main-title{        
+      margin: 0;        
+      font-size: clamp(22px, 3.4vw, 40px);        
+      font-weight: 800;        
+      letter-spacing: .5px;        
+      line-height:1.15;        
+        
+      background: linear-gradient(90deg, #ffffff, #a7c8ff, #ffd0e8, #ffffff);        
+      background-size: 220% 100%;        
+      -webkit-background-clip: text;        
+      background-clip:text;        
+      color: transparent;        
+        
+      animation: shimmer 3.5s ease-in-out infinite, floaty 4.2s ease-in-out infinite;        
+      text-shadow: 0 0 20px rgba(255,255,255,.10);        
+    }        
+        
+    @keyframes shimmer{        
+      0%{ background-position: 0% 50%; }        
+      50%{ background-position: 100% 50%; }        
+      100%{ background-position: 0% 50%; }        
+    }        
+    @keyframes floaty{        
+      0%,100%{ transform: translateY(0); }        
+      50%{ transform: translateY(-6px); }        
+    }        
+        
+    .subtitle{        
+      margin: 8px 0 0;        
+      color: var(--muted);        
+      font-size: 14px;        
+      line-height:1.6;        
+    }        
+        
+    .content{        
+      margin-top: 22px;        
+      display:grid;        
+      gap: 16px;        
+    }        
+        
+    .card{        
+      border:1px solid var(--border);        
+      background: var(--card);        
+      border-radius: 18px;        
+      padding: 18px 18px 16px;        
+      box-shadow: 0 14px 45px rgba(0,0,0,.28);        
+      backdrop-filter: blur(10px);        
+      transform: translateY(0);        
+      transition: transform .25s ease, border-color .25s ease;        
+    }        
+    .card:hover{        
+      transform: translateY(-4px);        
+      border-color: rgba(255,255,255,.28);        
+    }        
+        
+    h2{        
+      margin: 0 0 10px;        
+      font-size: 22px;        
+      font-weight: 700;        
+      display:flex;        
+      align-items:center;        
+      gap:10px;        
+    }        
+        
+    .dot{        
+      width:10px;        
+      height:10px;        
+      border-radius:50%;        
+      background: linear-gradient(180deg, #7db4ff, #ff9bd3);        
+      box-shadow: 0 0 18px rgba(125,180,255,.35);        
+      flex:0 0 auto;        
+      animation: pulse 1.9s ease-in-out infinite;        
+    }        
+    @keyframes pulse{        
+      0%,100%{ transform: scale(1); opacity: .9; }        
+      50%{ transform: scale(1.25); opacity: .65; }        
+    }        
+        
+    p{        
+      margin: 0;        
+      color: rgba(255,255,255,.86);        
+      font-size: 16.5px;        
+      line-height: 1.9;        
+    }        
+      
+    /* ✅ Added only for MP4 placement (keeps rest unchanged) */      
+    .gift-wrap{      
+      margin-top: 14px;      
+      display: flex;      
+      justify-content: center;      
+    }      
+    .gift-video{      
+      width: min(360px, 100%);      
+      height: auto;      
+      border-radius: 16px;      
+      border: 1px solid rgba(255,255,255,.16);      
+      box-shadow: 0 14px 45px rgba(0,0,0,.25);      
+      background: rgba(0,0,0,.15);      
     }      
       
-    *{ box-sizing:border-box; }      
-    body{      
-      margin:0;      
-      font-family:"Hind", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;      
-      color:var(--text);      
-      
-      /* Animated gradient background */      
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(92,145,255,.35), transparent 55%),      
-                  radial-gradient(900px 500px at 90% 20%, rgba(255,109,182,.30), transparent 55%),      
-                  linear-gradient(135deg, var(--bg1), var(--bg2));      
-      min-height:100vh;      
-      overflow-x:hidden;      
+    /* ✅ NEW: Book button row above footer */      
+    .book-cta{      
+      margin-top: 18px;      
+      display:flex;      
+      align-items:center;      
+      justify-content:center;      
+      gap:14px;      
+      flex-wrap:wrap;      
+      padding: 12px 12px;      
     }      
-      
-    /* subtle moving light */      
-    .glow{      
-      position:fixed;      
-      inset:-200px;      
-      background: conic-gradient(from 180deg, rgba(255,255,255,.0), rgba(255,255,255,.09), rgba(255,255,255,.0));      
-      filter: blur(40px);      
-      animation: spinGlow 12s linear infinite;      
-      pointer-events:none;      
-      opacity:.35;      
-    }      
-    @keyframes spinGlow { to { transform: rotate(360deg); } }      
-      
-    .wrap{      
-      max-width: 980px;      
-      margin: 0 auto;      
-      padding: 40px 18px 70px;      
-    }      
-      
-    header{      
-      text-align:center;      
-      padding: 26px 18px;      
-      border:1px solid var(--border);      
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));      
-      border-radius: 18px;      
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);      
-      position:relative;      
-      overflow:hidden;      
-    }      
-    
-    /* ✅ DP + Heading side-by-side (only header enhanced) */    
-    .header-row{    
-      display:flex;    
-      align-items:center;    
-      justify-content:center;    
-      gap:16px;    
-      flex-wrap:wrap;    
-    }    
-    .dp{    
-      width:120px;    
-      height:120px;    
-      border-radius:50%;    
-      object-fit:contain;    
-      background: rgba(0,0,0,.18);    
-      border:2px solid rgba(255,255,255,.28);    
-      box-shadow: 0 14px 45px rgba(0,0,0,.35);    
-      flex: 0 0 auto;    
-    }    
-    .header-text{    
-      text-align:left;    
-      min-width:min(520px, 100%);    
-    }    
-      
-    /* animated top heading */      
-    .main-title{      
-      margin: 0;      
-      font-size: clamp(22px, 3.4vw, 40px);      
-      font-weight: 800;      
-      letter-spacing: .5px;      
-      line-height:1.15;      
-      
-      background: linear-gradient(90deg, #ffffff, #a7c8ff, #ffd0e8, #ffffff);      
-      background-size: 220% 100%;      
-      -webkit-background-clip: text;      
-      background-clip:text;      
-      color: transparent;      
-      
-      animation: shimmer 3.5s ease-in-out infinite, floaty 4.2s ease-in-out infinite;      
-      text-shadow: 0 0 20px rgba(255,255,255,.10);      
-    }      
-      
-    @keyframes shimmer{      
-      0%{ background-position: 0% 50%; }      
-      50%{ background-position: 100% 50%; }      
-      100%{ background-position: 0% 50%; }      
-    }      
-    @keyframes floaty{      
-      0%,100%{ transform: translateY(0); }      
-      50%{ transform: translateY(-6px); }      
-    }      
-      
-    .subtitle{      
-      margin: 8px 0 0;      
-      color: var(--muted);      
-      font-size: 14px;      
-      line-height:1.6;      
-    }      
-      
-    .content{      
-      margin-top: 22px;      
-      display:grid;      
-      gap: 16px;      
-    }      
-      
-    .card{      
-      border:1px solid var(--border);      
-      background: var(--card);      
-      border-radius: 18px;      
-      padding: 18px 18px 16px;      
-      box-shadow: 0 14px 45px rgba(0,0,0,.28);      
+    .book-link{      
+      text-decoration:none;      
+      display:inline-flex;      
+      align-items:center;      
+      gap:10px;      
+      padding: 10px 12px;      
+      border-radius: 16px;      
+      border: 1px solid rgba(255,255,255,.16);      
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));      
+      box-shadow: 0 14px 45px rgba(0,0,0,.25);      
       backdrop-filter: blur(10px);      
       transform: translateY(0);      
-      transition: transform .25s ease, border-color .25s ease;      
+      transition: transform .2s ease, border-color .2s ease;      
     }      
-    .card:hover{      
-      transform: translateY(-4px);      
+    .book-link:hover{      
+      transform: translateY(-3px);      
       border-color: rgba(255,255,255,.28);      
     }      
       
-    h2{      
-      margin: 0 0 10px;      
-      font-size: 22px;      
-      font-weight: 700;      
+    /* Animated "Book" icon */      
+    .book-btn{      
+      width:64px;      
+      height:50px;      
+      position:relative;      
+      flex:0 0 auto;      
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.25));      
+      animation: bookFloat 2.6s ease-in-out infinite;      
+    }      
+    @keyframes bookFloat{      
+      0%,100%{ transform: translateY(0) rotate(-1deg); }      
+      50%{ transform: translateY(-4px) rotate(1deg); }      
+    }      
+    .book-btn .cover{      
+      position:absolute;      
+      inset:0;      
+      border-radius: 10px;      
+      background: linear-gradient(135deg, rgba(125,180,255,.95), rgba(255,155,211,.90));      
+      border: 1px solid rgba(255,255,255,.25);      
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);      
+    }      
+    .book-btn .spine{      
+      position:absolute;      
+      left:0;      
+      top:0;      
+      bottom:0;      
+      width:18px;      
+      border-radius: 10px 0 0 10px;      
+      background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(255,255,255,.10));      
+      border-right: 1px solid rgba(255,255,255,.22);      
+    }      
+    .book-btn .page{      
+      position:absolute;      
+      right:6px;      
+      top:6px;      
+      bottom:6px;      
+      width:22px;      
+      border-radius: 8px;      
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.60));      
+      transform-origin: left center;      
+      animation: pageFlip 1.2s ease-in-out infinite;      
+      opacity:.95;      
+    }      
+    @keyframes pageFlip{      
+      0%,100%{ transform: perspective(260px) rotateY(0deg); }      
+      50%{ transform: perspective(260px) rotateY(-38deg); }      
+    }      
+    .book-btn .shine{      
+      position:absolute;      
+      inset:0;      
+      border-radius: 10px;      
+      background: linear-gradient(120deg, rgba(255,255,255,.0), rgba(255,255,255,.32), rgba(255,255,255,.0));      
+      background-size: 240% 100%;      
+      animation: shineMove 1.8s ease-in-out infinite;      
+      mix-blend-mode: screen;      
+      opacity:.7;      
+    }      
+    @keyframes shineMove{      
+      0%{ background-position: 0% 50%; }      
+      60%{ background-position: 100% 50%; }      
+      100%{ background-position: 0% 50%; }      
+    }      
+    
+    /* ✅ NEW: Label under book (added only for Photos/Videos text) */    
+    .book-item{    
+      display:flex;    
+      flex-direction:column;    
+      align-items:center;    
+      gap:6px;    
+    }    
+    .book-label{    
+      font-size: 13.5px;    
+      color: rgba(255,255,255,.88);    
+      letter-spacing:.25px;    
+      animation: hintGlow 2.2s ease-in-out infinite;    
+      text-transform: none;    
+    }    
+      
+    /* Text + arrow animation */      
+    .hint{      
       display:flex;      
       align-items:center;      
       gap:10px;      
+      padding: 6px 10px;      
+      border-radius: 14px;      
+      border: 1px dashed rgba(255,255,255,.18);      
+      background: rgba(0,0,0,.08);      
+      backdrop-filter: blur(8px);      
     }      
-      
-    .dot{      
+    .hint-text{      
+      font-size: 14.5px;      
+      color: rgba(255,255,255,.90);      
+      letter-spacing: .2px;      
+      animation: hintGlow 2.2s ease-in-out infinite;      
+      white-space: nowrap;      
+    }      
+    @keyframes hintGlow{      
+      0%,100%{ transform: translateY(0); opacity:.92; }      
+      50%{ transform: translateY(-2px); opacity:1; }      
+    }      
+    .arrow{      
+      width:38px;      
+      height:16px;      
+      position:relative;      
+      animation: arrowMove 1.1s ease-in-out infinite;      
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,.28));      
+    }      
+    @keyframes arrowMove{      
+      0%,100%{ transform: translateX(0); }      
+      50%{ transform: translateX(-6px); }      
+    }      
+    .arrow:before{      
+      content:"";      
+      position:absolute;      
+      left:0;      
+      top:50%;      
+      width:30px;      
+      height:2px;      
+      transform: translateY(-50%);      
+      background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.92));      
+      border-radius: 999px;      
+    }      
+    .arrow:after{      
+      content:"";      
+      position:absolute;      
+      right:0;      
+      top:50%;      
       width:10px;      
       height:10px;      
-      border-radius:50%;      
-      background: linear-gradient(180deg, #7db4ff, #ff9bd3);      
-      box-shadow: 0 0 18px rgba(125,180,255,.35);      
-      flex:0 0 auto;      
-      animation: pulse 1.9s ease-in-out infinite;      
+      border-right: 2px solid rgba(255,255,255,.92);      
+      border-top: 2px solid rgba(255,255,255,.92);      
+      transform: translateY(-50%) rotate(225deg);      
+      border-radius: 2px;      
     }      
-    @keyframes pulse{      
-      0%,100%{ transform: scale(1); opacity: .9; }      
-      50%{ transform: scale(1.25); opacity: .65; }      
-    }      
-      
-    p{      
-      margin: 0;      
-      color: rgba(255,255,255,.86);      
-      font-size: 16.5px;      
-      line-height: 1.9;      
-    }      
-    
-    /* ✅ Added only for MP4 placement (keeps rest unchanged) */    
-    .gift-wrap{    
-      margin-top: 14px;    
-      display: flex;    
-      justify-content: center;    
-    }    
-    .gift-video{    
-      width: min(360px, 100%);    
-      height: auto;    
-      border-radius: 16px;    
-      border: 1px solid rgba(255,255,255,.16);    
-      box-shadow: 0 14px 45px rgba(0,0,0,.25);    
-      background: rgba(0,0,0,.15);    
-    }    
-    
-    /* ✅ NEW: Book button row above footer */    
-    .book-cta{    
-      margin-top: 18px;    
-      display:flex;    
-      align-items:center;    
-      justify-content:center;    
-      gap:14px;    
-      flex-wrap:wrap;    
-      padding: 12px 12px;    
-    }    
-    .book-link{    
-      text-decoration:none;    
-      display:inline-flex;    
-      align-items:center;    
-      gap:10px;    
-      padding: 10px 12px;    
-      border-radius: 16px;    
-      border: 1px solid rgba(255,255,255,.16);    
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));    
-      box-shadow: 0 14px 45px rgba(0,0,0,.25);    
-      backdrop-filter: blur(10px);    
-      transform: translateY(0);    
-      transition: transform .2s ease, border-color .2s ease;    
-    }    
-    .book-link:hover{    
-      transform: translateY(-3px);    
-      border-color: rgba(255,255,255,.28);    
-    }    
-    
-    /* Animated "Book" icon */    
-    .book-btn{    
-      width:64px;    
-      height:50px;    
-      position:relative;    
-      flex:0 0 auto;    
-      filter: drop-shadow(0 14px 18px rgba(0,0,0,.25));    
-      animation: bookFloat 2.6s ease-in-out infinite;    
-    }    
-    @keyframes bookFloat{    
-      0%,100%{ transform: translateY(0) rotate(-1deg); }    
-      50%{ transform: translateY(-4px) rotate(1deg); }    
-    }    
-    .book-btn .cover{    
-      position:absolute;    
-      inset:0;    
-      border-radius: 10px;    
-      background: linear-gradient(135deg, rgba(125,180,255,.95), rgba(255,155,211,.90));    
-      border: 1px solid rgba(255,255,255,.25);    
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);    
-    }    
-    .book-btn .spine{    
-      position:absolute;    
-      left:0;    
-      top:0;    
-      bottom:0;    
-      width:18px;    
-      border-radius: 10px 0 0 10px;    
-      background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(255,255,255,.10));    
-      border-right: 1px solid rgba(255,255,255,.22);    
-    }    
-    .book-btn .page{    
-      position:absolute;    
-      right:6px;    
-      top:6px;    
-      bottom:6px;    
-      width:22px;    
-      border-radius: 8px;    
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.60));    
-      transform-origin: left center;    
-      animation: pageFlip 1.2s ease-in-out infinite;    
-      opacity:.95;    
-    }    
-    @keyframes pageFlip{    
-      0%,100%{ transform: perspective(260px) rotateY(0deg); }    
-      50%{ transform: perspective(260px) rotateY(-38deg); }    
-    }    
-    .book-btn .shine{    
-      position:absolute;    
-      inset:0;    
-      border-radius: 10px;    
-      background: linear-gradient(120deg, rgba(255,255,255,.0), rgba(255,255,255,.32), rgba(255,255,255,.0));    
-      background-size: 240% 100%;    
-      animation: shineMove 1.8s ease-in-out infinite;    
-      mix-blend-mode: screen;    
-      opacity:.7;    
-    }    
-    @keyframes shineMove{    
-      0%{ background-position: 0% 50%; }    
-      60%{ background-position: 100% 50%; }    
-      100%{ background-position: 0% 50%; }    
-    }    
+        
+    footer{        
+      text-align:center;        
+      margin-top: 18px;        
+      color: rgba(255,255,255,.65);        
+      font-size: 14px;        
+    }        
+        
+    /* responsive spacing */        
+    @media (max-width: 520px){        
+      .wrap{ padding-top: 26px; }        
+      .card{ padding: 16px; }        
+      p{ font-size: 16px; }        
+      .header-text{ text-align:center; }      
+      .hint-text{ white-space: normal; text-align:center; }      
+    }        
   
-    /* ✅ NEW: Label under book (added only for Photos/Videos text) */  
-    .book-item{  
-      display:flex;  
-      flex-direction:column;  
-      align-items:center;  
-      gap:6px;  
+    /* ✅ NEW: Contact form only (separate animation + colors) */  
+    .contact-card{  
+      animation: contactPop 1.2s ease-in-out both, contactFloat 5s ease-in-out infinite;  
+      border-color: rgba(255,255,255,.22);  
     }  
-    .book-label{  
-      font-size: 13.5px;  
-      color: rgba(255,255,255,.88);  
+    @keyframes contactPop{  
+      0%{ transform: translateY(18px) scale(.98); opacity:0; }  
+      100%{ transform: translateY(0) scale(1); opacity:1; }  
+    }  
+    @keyframes contactFloat{  
+      0%,100%{ transform: translateY(0); }  
+      50%{ transform: translateY(-6px); }  
+    }  
+  
+    .contact-title{  
+      justify-content:center;  
+      text-align:center;  
+      width:100%;  
+      animation: contactGlow 2.4s ease-in-out infinite;  
+    }  
+    @keyframes contactGlow{  
+      0%,100%{ filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }  
+      50%{ filter: drop-shadow(0 0 18px rgba(255,255,255,.18)); }  
+    }  
+  
+    .field-label{  
+      text-align:center;  
+      font-weight:700;  
       letter-spacing:.25px;  
-      animation: hintGlow 2.2s ease-in-out infinite;  
-      text-transform: none;  
+      font-size: 14px;  
+      background: linear-gradient(90deg, rgba(125,180,255,.95), rgba(255,155,211,.95), rgba(255,255,255,.92));  
+      -webkit-background-clip:text;  
+      background-clip:text;  
+      color: transparent;  
+      animation: labelShimmer 2.8s ease-in-out infinite;  
     }  
-    
-    /* Text + arrow animation */    
-    .hint{    
-      display:flex;    
-      align-items:center;    
-      gap:10px;    
-      padding: 6px 10px;    
-      border-radius: 14px;    
-      border: 1px dashed rgba(255,255,255,.18);    
-      background: rgba(0,0,0,.08);    
-      backdrop-filter: blur(8px);    
-    }    
-    .hint-text{    
-      font-size: 14.5px;    
-      color: rgba(255,255,255,.90);    
-      letter-spacing: .2px;    
-      animation: hintGlow 2.2s ease-in-out infinite;    
-      white-space: nowrap;    
-    }    
-    @keyframes hintGlow{    
-      0%,100%{ transform: translateY(0); opacity:.92; }    
-      50%{ transform: translateY(-2px); opacity:1; }    
-    }    
-    .arrow{    
-      width:38px;    
-      height:16px;    
-      position:relative;    
-      animation: arrowMove 1.1s ease-in-out infinite;    
-      filter: drop-shadow(0 10px 10px rgba(0,0,0,.28));    
-    }    
-    @keyframes arrowMove{    
-      0%,100%{ transform: translateX(0); }    
-      50%{ transform: translateX(-6px); }    
-    }    
-    .arrow:before{    
-      content:"";    
-      position:absolute;    
-      left:0;    
-      top:50%;    
-      width:30px;    
-      height:2px;    
-      transform: translateY(-50%);    
-      background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.92));    
-      border-radius: 999px;    
-    }    
-    .arrow:after{    
-      content:"";    
-      position:absolute;    
-      right:0;    
-      top:50%;    
-      width:10px;    
-      height:10px;    
-      border-right: 2px solid rgba(255,255,255,.92);    
-      border-top: 2px solid rgba(255,255,255,.92);    
-      transform: translateY(-50%) rotate(225deg);    
-      border-radius: 2px;    
-    }    
+    @keyframes labelShimmer{  
+      0%{ opacity:.88; transform: translateY(0); }  
+      50%{ opacity:1; transform: translateY(-2px); }  
+      100%{ opacity:.88; transform: translateY(0); }  
+    }  
+  
+    .contact-input, .contact-textarea{  
+      width:100%;  
+      padding:12px 14px;  
+      border-radius:14px;  
+      border:1px solid rgba(255,255,255,.16);  
+      background:rgba(0,0,0,.12);  
+      outline:none;  
+      font-size: 15.5px;  
+      color: rgba(255,255,255,.96);  
+      caret-color: rgba(255,155,211,.95);  
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;  
+    }  
+    .contact-input:focus, .contact-textarea:focus{  
+      transform: translateY(-1px);  
+      border-color: rgba(255,255,255,.32);  
+      box-shadow: 0 0 0 3px rgba(125,180,255,.14);  
+    }  
+    .contact-input::placeholder, .contact-textarea::placeholder{  
+      color: rgba(255,255,255,.62);  
+    }  
+  
+    .contact-btn{  
+      padding:12px 16px;  
+      border:none;  
+      border-radius:16px;  
+      font-weight:800;  
+      cursor:pointer;  
+      color:rgba(255,255,255,.95);  
+      background: linear-gradient(135deg, rgba(125,180,255,.85), rgba(255,155,211,.80));  
+      box-shadow: 0 14px 45px rgba(0,0,0,.25);  
+      animation: btnPulse 1.9s ease-in-out infinite;  
+    }  
+    @keyframes btnPulse{  
+      0%,100%{ transform: scale(1); }  
+      50%{ transform: scale(1.03); }  
+    }  
+
+    /* ✅ NEW: Scroll reveal system (ADDED only, doesn't change your existing design) */
+    .sr{
+      opacity:0;
+      transform: translateY(24px);
+      filter: blur(6px);
+      transition: opacity .85s ease, transform .85s ease, filter .85s ease;
+      will-change: opacity, transform, filter;
+    }
+    .sr.show{
+      opacity:1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Different styles/animations per section */
+    .sr.fx-1{ transform: translateY(26px) scale(.985); }
+    .sr.fx-1.show{ transform: translateY(0) scale(1); }
+
+    .sr.fx-2{ transform: translateX(-28px) rotate(-.6deg); }
+    .sr.fx-2.show{ transform: translateX(0) rotate(0deg); }
+
+    .sr.fx-3{ transform: translateX(28px) rotate(.6deg); }
+    .sr.fx-3.show{ transform: translateX(0) rotate(0deg); }
+
+    .sr.fx-4{ transform: translateY(34px) perspective(900px) rotateX(8deg); }
+    .sr.fx-4.show{ transform: translateY(0) perspective(900px) rotateX(0deg); }
+
+    .sr.fx-5{ transform: translateY(22px) scale(.97); }
+    .sr.fx-5.show{ transform: translateY(0) scale(1); }
+
+    /* Extra: slightly different glow on reveal */
+    .sr.show{
+      box-shadow: 0 18px 70px rgba(0,0,0,.32);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .sr, .sr.show{
+        transition:none !important;
+        transform:none !important;
+        opacity:1 !important;
+        filter:none !important;
+      }
+    }
+  </style>  
+</head>  
+
+<body>        
+  <div class="glow"></div>    
+
+  <div class="wrap">        
+    <header class="sr fx-1">        
+      <div class="header-row">      
+        <img class="dp" src="d.jpg" alt="DP">      
+        <div class="header-text">      
+          <h1 class="main-title">Youth Foundation Ambedkar Nagar</h1>        
+          <div class="subtitle">समाज सेवा • शिक्षा • स्वास्थ्य • जागरूकता</div>        
+        </div>      
+      </div>      
+    </header>  
+
+    <main class="content">        
+      <section class="card sr fx-2">        
+        <h2><span class="dot"></span> संस्था के बारे में</h2>        
+        <p>        
+          यूथ फाउंडेशन, अम्बेडकर नगर एक सामाजिक संस्था है, जो शिक्षा, स्वास्थ्य, जागरूकता और जरूरतमंदों की सहायता के लिए निरंतर काम करती है।        
+          हमारा उद्देश्य समाज के हर वर्ग तक मदद पहुँचाना, युवाओं को सकारात्मक दिशा देना और सेवा के माध्यम से बदलाव लाना है।        
+          हम जरूरतमंद परिवारों को सहयोग, बच्चों की पढ़ाई में सहायता, रक्तदान / स्वास्थ्य शिविर, स्वच्छता व सामाजिक जागरूकता जैसे कार्यक्रमों के जरिए        
+          एक बेहतर और मजबूत समाज बनाने की कोशिश करते हैं।        
+        </p>        
+          
+        <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->      
+        <div class="gift-wrap">      
+          <video class="gift-video" autoplay loop muted playsinline preload="auto">      
+            <source src="v.mp4" type="video/mp4">      
+          </video>      
+        </div>      
+      </section>        
+          
+      <section class="card sr fx-3">        
+        <h2><span class="dot"></span> मेरे बारे में</h2>        
+        <p>        
+          एक सामाजिक कार्यकर्ता हूँ और यूट फाउंडेशन, अम्बेडकर नगर के साथ मिलकर जरूरतमंदों की मदद करता हूँ।        
+          मेरा प्रयास रहता है कि जो भी व्यक्ति या परिवार कठिन परिस्थिति में हो, उसे सही मार्गदर्शन और आवश्यक सहायता समय पर मिल सके।        
+          मैं शिक्षा, स्वास्थ्य, जागरूकता और सामाजिक सेवा से जुड़े कार्यों में सक्रिय रूप से भाग लेता हूँ और समाज में सकारात्मक बदलाव लाने के लिए        
+          पूरी ईमानदारी से काम करता हूँ।        
+        </p>        
+          
+        <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->      
+        <div class="gift-wrap">      
+          <video class="gift-video" autoplay loop muted playsinline preload="auto">      
+            <source src="v.mp4" type="video/mp4">      
+          </video>      
+        </div>      
+      </section>    
+    </main>        
+          
+    <!-- ✅ NEW: Book button + animated hint (above footer) -->      
+    <div class="book-cta sr fx-4">      
+      <div class="hint">      
+        <div class="hint-text">फोटो और वीडियो देखने के लिए  click करें</div>      
+        <div class="arrow" aria-hidden="true"></div>      
+      </div>      
+        
+      <!-- ✅ Photos Book -->    
+      <div class="book-item">    
+        <a class="book-link" href="book.html" aria-label="Open Photos Book">      
+          <div class="book-btn" aria-hidden="true">      
+            <div class="cover"></div>      
+            <div class="spine"></div>      
+            <div class="page"></div>      
+            <div class="shine"></div>      
+          </div>      
+        </a>    
+        <div class="book-label">Photos</div>    
+      </div>    
+        
+      <!-- ✅ Videos Book -->    
+      <div class="book-item">    
+        <a class="book-link" href="video.html" aria-label="Open Videos Book">      
+          <div class="book-btn" aria-hidden="true">      
+            <div class="cover"></div>      
+            <div class="spine"></div>      
+            <div class="page"></div>      
+            <div class="shine"></div>      
+          </div>      
+        </a>    
+        <div class="book-label">Videos</div>    
+      </div>    
+    </div>      
+          
+    <footer class="sr fx-5">        
+      © Youth Foundation Ambedkar Nagar        
+    </footer>      
       
-    footer{      
-      text-align:center;      
-      margin-top: 18px;      
-      color: rgba(255,255,255,.65);      
-      font-size: 14px;      
-    }      
-      
-    /* responsive spacing */      
-    @media (max-width: 520px){      
-      .wrap{ padding-top: 26px; }      
-      .card{ padding: 16px; }      
-      p{ font-size: 16px; }      
-      .header-text{ text-align:center; }    
-      .hint-text{ white-space: normal; text-align:center; }    
-    }      
-
-    /* ✅ NEW: Contact form only (separate animation + colors) */
-    .contact-card{
-      animation: contactPop 1.2s ease-in-out both, contactFloat 5s ease-in-out infinite;
-      border-color: rgba(255,255,255,.22);
-    }
-    @keyframes contactPop{
-      0%{ transform: translateY(18px) scale(.98); opacity:0; }
-      100%{ transform: translateY(0) scale(1); opacity:1; }
-    }
-    @keyframes contactFloat{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-6px); }
-    }
-
-    .contact-title{
-      justify-content:center;
-      text-align:center;
-      width:100%;
-      animation: contactGlow 2.4s ease-in-out infinite;
-    }
-    @keyframes contactGlow{
-      0%,100%{ filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-      50%{ filter: drop-shadow(0 0 18px rgba(255,255,255,.18)); }
-    }
-
-    .field-label{
-      text-align:center;
-      font-weight:700;
-      letter-spacing:.25px;
-      font-size: 14px;
-      background: linear-gradient(90deg, rgba(125,180,255,.95), rgba(255,155,211,.95), rgba(255,255,255,.92));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-      animation: labelShimmer 2.8s ease-in-out infinite;
-    }
-    @keyframes labelShimmer{
-      0%{ opacity:.88; transform: translateY(0); }
-      50%{ opacity:1; transform: translateY(-2px); }
-      100%{ opacity:.88; transform: translateY(0); }
-    }
-
-    .contact-input, .contact-textarea{
-      width:100%;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.12);
-      outline:none;
-      font-size: 15.5px;
-      color: rgba(255,255,255,.96);
-      caret-color: rgba(255,155,211,.95);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-    .contact-input:focus, .contact-textarea:focus{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.32);
-      box-shadow: 0 0 0 3px rgba(125,180,255,.14);
-    }
-    .contact-input::placeholder, .contact-textarea::placeholder{
-      color: rgba(255,255,255,.62);
-    }
-
-    .contact-btn{
-      padding:12px 16px;
-      border:none;
-      border-radius:16px;
-      font-weight:800;
-      cursor:pointer;
-      color:rgba(255,255,255,.95);
-      background: linear-gradient(135deg, rgba(125,180,255,.85), rgba(255,155,211,.80));
-      box-shadow: 0 14px 45px rgba(0,0,0,.25);
-      animation: btnPulse 1.9s ease-in-out infinite;
-    }
-    @keyframes btnPulse{
-      0%,100%{ transform: scale(1); }
-      50%{ transform: scale(1.03); }
-    }
-  </style>  </head>  <body>      
-  <div class="glow"></div>    <div class="wrap">      
-    <header>      
-      <div class="header-row">    
-        <img class="dp" src="d.jpg" alt="DP">    
-        <div class="header-text">    
-          <h1 class="main-title">Youth Foundation Ambedkar Nagar</h1>      
-          <div class="subtitle">समाज सेवा • शिक्षा • स्वास्थ्य • जागरूकता</div>      
+    <!-- ✅ Contact Form moved BELOW footer (as requested) -->  
+    <section class="card contact-card sr fx-2" style="margin-top:16px;">  
+      <h2 class="contact-title"><span class="dot"></span> Contact Us</h2>    
+        
+      <form action="https://formspree.io/f/mpqjyzna" method="POST">    
+        <p style="margin-bottom:12px; color: rgba(255,255,255,.82); text-align:center;">  
+          Write your name, email and message. Your message will be sent directly to email.  
+        </p>    
+        
+        <div style="display:grid; gap:12px;">    
+        
+          <div class="field-label">Name</div>    
+          <input      
+            class="contact-input"    
+            type="text"      
+            name="name"      
+            placeholder="Your Name"      
+            required      
+          />    
+        
+          <div class="field-label">Email</div>    
+          <input      
+            class="contact-input"    
+            type="email"      
+            name="email"      
+            placeholder="Your Email"      
+            required      
+          />    
+        
+          <div class="field-label">Message</div>    
+          <textarea      
+            class="contact-textarea"    
+            name="message"      
+            placeholder="Write your message..."      
+            rows="5"      
+            required      
+          ></textarea>    
+        
+          <!-- Optional: email subject -->      
+          <input type="hidden" name="_subject" value="Youth Foundation Website Message" />      
+        
+          <button class="contact-btn" type="submit">      
+            Send Message      
+          </button>      
         </div>    
-      </div>    
-    </header>  <main class="content">      
-  <section class="card">      
-    <h2><span class="dot"></span> संस्था के बारे में</h2>      
-    <p>      
-      यूथ फाउंडेशन, अम्बेडकर नगर एक सामाजिक संस्था है, जो शिक्षा, स्वास्थ्य, जागरूकता और जरूरतमंदों की सहायता के लिए निरंतर काम करती है।      
-      हमारा उद्देश्य समाज के हर वर्ग तक मदद पहुँचाना, युवाओं को सकारात्मक दिशा देना और सेवा के माध्यम से बदलाव लाना है।      
-      हम जरूरतमंद परिवारों को सहयोग, बच्चों की पढ़ाई में सहायता, रक्तदान / स्वास्थ्य शिविर, स्वच्छता व सामाजिक जागरूकता जैसे कार्यक्रमों के जरिए      
-      एक बेहतर और मजबूत समाज बनाने की कोशिश करते हैं।      
-    </p>      
-    
-    <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->    
-    <div class="gift-wrap">    
-      <video class="gift-video" autoplay loop muted playsinline preload="auto">    
-        <source src="v.mp4" type="video/mp4">    
-      </video>    
-    </div>    
-  </section>      
-    
-  <section class="card">      
-    <h2><span class="dot"></span> मेरे बारे में</h2>      
-    <p>      
-      एक सामाजिक कार्यकर्ता हूँ और यूट फाउंडेशन, अम्बेडकर नगर के साथ मिलकर जरूरतमंदों की मदद करता हूँ।      
-      मेरा प्रयास रहता है कि जो भी व्यक्ति या परिवार कठिन परिस्थिति में हो, उसे सही मार्गदर्शन और आवश्यक सहायता समय पर मिल सके।      
-      मैं शिक्षा, स्वास्थ्य, जागरूकता और सामाजिक सेवा से जुड़े कार्यों में सक्रिय रूप से भाग लेता हूँ और समाज में सकारात्मक बदलाव लाने के लिए      
-      पूरी ईमानदारी से काम करता हूँ।      
-    </p>      
-    
-    <!-- ✅ MP4 Gift (v.mp4) added below paragraph -->    
-    <div class="gift-wrap">    
-      <video class="gift-video" autoplay loop muted playsinline preload="auto">    
-        <source src="v.mp4" type="video/mp4">    
-      </video>    
-    </div>    
-  </section>  
-</main>      
-    
-<!-- ✅ NEW: Book button + animated hint (above footer) -->    
-<div class="book-cta">    
-  <div class="hint">    
-    <div class="hint-text">फोटो और वीडियो देखने के लिए  click करें</div>    
-    <div class="arrow" aria-hidden="true"></div>    
-  </div>    
-  
-  <!-- ✅ Photos Book -->  
-  <div class="book-item">  
-    <a class="book-link" href="book.html" aria-label="Open Photos Book">    
-      <div class="book-btn" aria-hidden="true">    
-        <div class="cover"></div>    
-        <div class="spine"></div>    
-        <div class="page"></div>    
-        <div class="shine"></div>    
-      </div>    
-    </a>  
-    <div class="book-label">Photos</div>  
-  </div>  
-  
-  <!-- ✅ Videos Book -->  
-  <div class="book-item">  
-    <a class="book-link" href="video.html" aria-label="Open Videos Book">    
-      <div class="book-btn" aria-hidden="true">    
-        <div class="cover"></div>    
-        <div class="spine"></div>    
-        <div class="page"></div>    
-        <div class="shine"></div>    
-      </div>    
-    </a>  
-    <div class="book-label">Videos</div>  
-  </div>  
-</div>    
-    
-<footer>      
-  © Youth Foundation Ambedkar Nagar      
-</footer>    
+      </form>    
+    </section>  
+      
+  </div>        
 
-<!-- ✅ Contact Form moved BELOW footer (as requested) -->
-<section class="card contact-card" style="margin-top:16px;">
-  <h2 class="contact-title"><span class="dot"></span> Contact Us</h2>  
+  <!-- ✅ UPDATED: Scroll reveal JS (Now animation replays on every enter/exit) -->
+  <script>
+    (function(){
+      const items = document.querySelectorAll('.sr');
 
-  <form action="https://formspree.io/f/mpqjyzna" method="POST">  
-    <p style="margin-bottom:12px; color: rgba(255,255,255,.82); text-align:center;">
-      Write your name, email and message. Your message will be sent directly to email.
-    </p>  
+      // Fallback
+      if(!('IntersectionObserver' in window)){
+        items.forEach(el => el.classList.add('show'));
+        return;
+      }
 
-    <div style="display:grid; gap:12px;">  
+      // Track visibility state to avoid rapid toggles flicker
+      const state = new WeakMap();
 
-      <div class="field-label">Name</div>
-      <input  
-        class="contact-input"
-        type="text"  
-        name="name"  
-        placeholder="Your Name"  
-        required  
-      />  
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach((e)=>{
+          const wasVisible = state.get(e.target) === true;
 
-      <div class="field-label">Email</div>
-      <input  
-        class="contact-input"
-        type="email"  
-        name="email"  
-        placeholder="Your Email"  
-        required  
-      />  
+          if(e.isIntersecting){
+            // Enter viewport -> ALWAYS add show (replay if removed earlier)
+            if(!wasVisible){
+              e.target.classList.add('show');
+              state.set(e.target, true);
+            }else{
+              // still visible: keep it
+              e.target.classList.add('show');
+            }
+          }else{
+            // Exit viewport -> remove show so next time it enters animation replays
+            if(wasVisible){
+              e.target.classList.remove('show');
+              state.set(e.target, false);
+            }else{
+              // already not visible: keep it removed
+              e.target.classList.remove('show');
+            }
+          }
+        });
+      }, {
+        threshold: 0.18,
+        rootMargin: "0px 0px -10% 0px"
+      });
 
-      <div class="field-label">Message</div>
-      <textarea  
-        class="contact-textarea"
-        name="message"  
-        placeholder="Write your message..."  
-        rows="5"  
-        required  
-      ></textarea>  
+      items.forEach(el => {
+        state.set(el, false);
+        obs.observe(el);
+      });
+    })();
+  </script>
 
-      <!-- Optional: email subject -->  
-      <input type="hidden" name="_subject" value="Youth Foundation Website Message" />  
-
-      <button class="contact-btn" type="submit">  
-        Send Message  
-      </button>  
-    </div>  
-  </form>  
-</section>
-
-  </div>      
-</body>      
+</body>        
 </html>
